@@ -1,7 +1,9 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 
 const Notification = () => {
-    return <div style={style}>render here notification...</div>;
+    const notification = useSelector((state) => state.notification);
+    return <div style={style}>{notification}</div>;
 };
 
 const style = {
