@@ -2,19 +2,22 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { createAnecdote } from '../reducers/anecdoteReducer';
 import { changeNotifMsg, removeNotifMsg } from '../reducers/notificationReducer';
+import anecdoteService from '../services/anecdotes';
 
 export default function AnecdoteForm() {
     const dispatch = useDispatch();
 
     const create = (e) => {
         e.preventDefault();
-        const anecdote = e.target.anecdote.value;
+        const content = e.target.anecdote.value;
         e.target.anecdote.value = '';
-        dispatch(createAnecdote(anecdote));
-        dispatch(changeNotifMsg(`you created ${anecdote}`));
-        setTimeout(() => {
-            dispatch(removeNotifMsg());
-        }, 5000);
+        anecdoteService.newAnecdote(content).then((anecdote) => {
+            dispatch(createAnecdote(anecdote));
+            dispatch(changeNotifMsg(`you created ${anecdote.content}`));
+            setTimeout(() => {
+                dispatch(removeNotifMsg());
+            }, 5000);
+        });
     };
 
     return (

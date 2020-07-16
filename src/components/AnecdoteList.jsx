@@ -11,7 +11,6 @@ export default function AnecdoteList() {
         }
         return anecdotes;
     });
-    console.log(anecdotes);
 
     const vote = (id, content) => {
         dispatch(voteAnecdote(id));
