@@ -12,6 +12,15 @@ export const removeNotifMsg = (msg = 'HELLLO PEOPLE') => {
     };
 };
 
+export const setNotification = (content, timeOut) => {
+    return async (dispatch) => {
+        dispatch(changeNotifMsg(`you voted for ${content}`));
+        setTimeout(() => {
+            dispatch(removeNotifMsg());
+        }, timeOut);
+    };
+};
+
 const reducer = (state = 'HELLO PEOPLE', action) => {
     switch (action.type) {
         case 'CHANGE_NOTIF':

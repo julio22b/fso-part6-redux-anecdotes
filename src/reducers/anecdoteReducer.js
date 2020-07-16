@@ -1,21 +1,32 @@
-export const createAnecdote = (anecdote) => {
-    return {
-        type: 'NEW_ANECDOTE',
-        payload: anecdote,
+import anecdoteService from '../services/anecdotes';
+
+export const createAnecdote = (content) => {
+    return async (dispatch) => {
+        const newAnecdote = await anecdoteService.newAnecdote(content);
+        dispatch({
+            type: 'NEW_ANECDOTE',
+            payload: newAnecdote,
+        });
     };
 };
 
-export const voteAnecdote = (id) => {
-    return {
-        type: 'VOTE',
-        id,
+export const voteAnecdote = (anecdote) => {
+    return async (dispatch) => {
+        const votedAnecdote = await anecdoteService.voteAnecdote(anecdote);
+        dispatch({
+            type: 'VOTE',
+            id: votedAnecdote.id,
+        });
     };
 };
 
-export const initAnecdotes = (anecdotes) => {
-    return {
-        type: 'INIT_ANECDOTES',
-        anecdotes,
+export const initAnecdotes = () => {
+    return async (dispatch) => {
+        const anecdotes = await anecdoteService.getAll();
+        dispatch({
+            type: 'INIT_ANECDOTES',
+            anecdotes,
+        });
     };
 };
 
@@ -31,7 +42,7 @@ const reducer = (state = [], action) => {
         case 'NEW_ANECDOTE':
             return [...state, action.payload].sort((a, b) => b.votes - a.votes);
         case 'INIT_ANECDOTES':
-            return action.anecdotes;
+            return action.anecdotes.sort((a, b) => b.votes - a.votes);
         default:
             break;
     }
